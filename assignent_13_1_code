@@ -13,7 +13,6 @@ coins = 0
 
 
 def main():
-    sda = descoins
     location = STARTING_LOCATION
     while location != FINAL_DESTINATION:
         location = play_one_move(location)
@@ -27,13 +26,16 @@ def play_one_move(location: Tuple[int]) -> Tuple[int]:
 
     Returns updated location.
     """
+    if location == FINAL_DESTINATION:
+            print(f"Victory! Total coins {coins}.")
 
     valid_directions = find_directions(location)
     direction = get_direction(valid_directions)
 
     if direction in valid_directions:
-        asking_to_pull(coins)
+        asking_to_pull(coins,location)
         location = move(direction, location)
+        
     else:
         print("Not a valid direction!")
 
@@ -106,14 +108,18 @@ def move(direction: str, location: Tuple[int]) -> Tuple[int]:
 
     return x, y
 
-def asking_to_pull(x):
-    the_input = input("Yoyoyo wanna play some games? Y/N")
+def asking_to_pull(x,location):
+    the_input = input("Pull a lever (y/n):")
     if the_input.lower() == "y":
         global coins
         coins +=1
         print(f"You received 1 coin, your total is now {coins}.")
-    else:
-        pass
+    elif the_input.lower() != "y":
+        valid_directions = find_directions(location)
+        direction = get_direction(valid_directions)
+        location = move(direction, location)
+    
+    return location 
 
 
 
